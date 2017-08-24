@@ -1,26 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { TransferState } from '../modules/transfer-state/transfer-state';
-import { REQUEST } from '@nguniversal/express-engine/tokens';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'demo-app',
+  selector: 'app-root',
   template: `
-    <h1>Universal Demo using Angular</h1>
-    <a routerLink="/">Home</a>
-    <a routerLink="/lazy">Lazy</a>
-    <router-outlet></router-outlet>
+    <h1>
+      Welcome to {{title}}!!
+    </h1>
   `,
-  styles: [
-    `h1 {
-      color: green;
-    }`
-  ]
+  styles: []
 })
-export class AppComponent implements OnInit {
-  constructor(private cache: TransferState) { }
-
-  ngOnInit() {
-    // This is an example
-    this.cache.set('message', 'Hello World');
+export class AppComponent {
+  title;
+  ngOnInit(){
+    this.title = 'before async';
+    setTimeout(() => this.title = 'after async', 2000)
   }
 }

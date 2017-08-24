@@ -9,6 +9,7 @@ morgan.log
 /typings/
 /tsd_typings/
 /dist/
+/dist-server/
 /compiled/
 
 # Node #

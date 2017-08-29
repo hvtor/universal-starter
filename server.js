@@ -2,14 +2,18 @@ require('zone.js/dist/zone-node');
 const { Request, Response } = require('express');
 const { platformServer, renderModuleFactory } = require('@angular/platform-server');
 const { ngExpressEngine } = require('@nguniversal/express-engine');
+// Import module map for lazy loading
+const { provideModuleMap } = require('@nguniversal/module-map-ngfactory-loader');
+
 const express = require('express');
 const fs = require('fs');
+
 
 const files = fs.readdirSync(`${process.cwd()}/../dist-server`);
 const mainFiles = files.filter(file => file.startsWith('main'));
 const hash = mainFiles[0].split('.')[1];``
 
-const { AppServerModuleNgFactory } = require(`./../dist-server/main.${hash}.bundle`);
+const { AppServerModuleNgFactory, LAZY_MODULE_MAP } = require(`./../dist-server/main.${hash}.bundle`);
 
 const app = express();
 const port = 8000;
@@ -17,7 +21,10 @@ const baseUrl = `http://localhost:${port}`;
 
 // Set the engine
 app.engine('html', ngExpressEngine({
-  bootstrap: AppServerModuleNgFactory//AppServerModuleFactory // Give it a module to bootstrap
+  bootstrap: AppServerModuleNgFactory,
+  providers: [
+    provideModuleMap(LAZY_MODULE_MAP)
+  ]
 }));
 
 app.set('view engine', 'html');

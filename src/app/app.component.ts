@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Meta } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -11,8 +12,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title;
+  constructor(private metaService: Meta){}
   ngOnInit(){
     this.title = 'before async';
     setTimeout(() => this.title = 'after async', 2000)
+    this.metaService.addTag({
+      name: 'author',
+      value: 'Toxicable'
+    });
   }
 }
